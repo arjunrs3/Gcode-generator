@@ -27,8 +27,11 @@ def create_zigzag(positions, width, height, cycles, z, dt=0.1):
 
 def write_position(positions):
     with open("gcode.gcode", "w") as f:
+        f.write("G91\n")
+        f.write("G16 X Y Z\n")
+        f.write("F 3\n")
         for x, y, z in positions:
-            f.write(f"G1 X{x} Y{y} Z{z};\n")
+            f.write(f"G1 X{x} Y{y} Z{z}\n")
 
 def clear_gcode():
     open("gcode.gcode", "w").close()
@@ -42,7 +45,7 @@ def plot_curve(positions):
     plt.show()
 
 positions = []
-create_circle(positions, 1, 1, 10)
+create_zigzag(positions, 10, 10, 4, 0)
 clear_gcode()
 write_position(positions)
 plot_curve(positions)
