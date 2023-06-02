@@ -25,13 +25,14 @@ def create_zigzag(positions, width, height, cycles, z, dt=0.1):
         positions.append([width * i + width/2, height, z])
         positions.append([width * i + width/2, 0, z])
 
-def write_position(positions):
-    with open("gcode.gcode", "w") as f:
-        f.write("G91\n")
+def write_position(positions, filename):
+    with open(filename, "w") as f:
+        f.write("G90\n")
         f.write("G16 X Y Z\n")
+        f.write("G92 X0 Y0 Z0\n")
         f.write("F 3\n")
         for x, y, z in positions:
-            f.write(f"G1 X{x} Y{y} Z{z}\n")
+            f.write(f"G1 X{round(x, 4)} Y{round(y, 4)} Z{round(z, 4)}\n")
 
 def clear_gcode():
     open("gcode.gcode", "w").close()
@@ -45,9 +46,9 @@ def plot_curve(positions):
     plt.show()
 
 positions = []
-create_zigzag(positions, 10, 10, 4, 0)
+create_spiral(positions, 2, 5, 5)
 clear_gcode()
-write_position(positions)
+write_position(positions, "long-spiral.gcode")
 plot_curve(positions)
 
 
